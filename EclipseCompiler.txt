@@ -1,0 +1,9 @@
+8 Feb 2019 2:19:14 GMT: Log 'EclipseCompiler.txt' opened: 8 Feb 2019 2:19:14 GMT with name D:\headsoccerproject\Project\EclipseCompiler.txt
+8 Feb 2019 2:19:24 GMT: diagnostics = javax.tools.DiagnosticCollector@b0e1cf
+fileManager = org.eclipse.jdt.internal.compiler.tool.EclipseFileManager@1723098
+fileObjects = [D:\headsoccerproject\Project\HeadSoccer.java]
+8 Feb 2019 2:19:24 GMT: Calling 'org.eclipse.jdt.internal.compiler.tool.EclipseCompiler@1a7988' with options [-Xlint:deprecation, -Xlint:unchecked, -g, -classpath, D:\headsoccerproject\Project;C:\Users\tieuv\Desktop\drjava-beta-20160913-225446.exe]
+8 Feb 2019 2:19:25 GMT: Compiler call returned
+8 Feb 2019 2:19:25 GMT: Processing diagnostic org.eclipse.jdt.internal.compiler.tool.EclipseCompilerImpl$3$2@48a72a
+8 Feb 2019 2:19:25 GMT:  Kind = WARNING
+8 Feb 2019 2:19:25 GMT: Name = D:\headsoccerproject\Project\HeadSoccer.java LineNo = 4 ColNo = 14 Msg = 'The serializable class HeadSoccer does not declare a static final serialVersionUID field of type long'

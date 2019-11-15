@@ -1,0 +1,294 @@
+import java.applet.*;
+import java.awt.*;
+import java.awt.event.*;
+public class HeadSoccer extends Applet implements KeyListener , Runnable
+{
+  private Image jap , arg , ball , goalarg , goaljap , messi , kagawa ;
+  private Image [] b = new Image[5] ;
+  static int ans , c1 = 4 , c2 =4 , kx ,ky ,mx, my;
+  static boolean as , js , aw = false , jw = false ;
+  int scrwid = 1250 , scrhei = 850 , jpx = 950 , jpy = 575 , arx = 200 , ary = 575 , bx =590 , by = 492 ,jc =0 , ac =0; 
+  Font meme ;
+  public void init()
+  {
+    meme = new Font("Arial",Font.BOLD,38);
+    addKeyListener(this);
+    jap = this.getImage(getDocumentBase(),"japan.png");
+    arg = this.getImage(getDocumentBase(),"argen.png");
+    b[1] = this.getImage(getDocumentBase(),"ballie.png");
+    b[2] = this.getImage(getDocumentBase(),"ballieleft.png");
+    b[3] = this.getImage(getDocumentBase(),"ballieright.png");
+    b[4] = this.getImage(getDocumentBase(),"balliedown.png");
+    goalarg = this.getImage(getDocumentBase(),"goalarg.jpg");
+    goaljap = this.getImage(getDocumentBase(),"goaljap.jpg");
+    messi = this.getImage(getDocumentBase(),"messi.jpg");
+    kagawa = this.getImage(getDocumentBase(),"Kagawa.jpg");
+    ball = b[1] ;
+  }
+  private boolean collision (int x1, int y1, int width1, int height1, int x2, int y2, int width2, int height2 )
+{
+   for (int x = x1; x <= x1+width1; x++) 
+     for (int y = y1; y <= y1+height1; y++) 
+     {   
+       if ((x >= x2) && (x <= x2 + width2) && (y >= y2) && (y <= y2 + height2))
+         return true;
+     }
+   return false;
+}
+  public int pressup(int keyz , int posy ) // if press go up
+  {
+    if (keyz == 38)
+    {
+      if (posy >= 0)
+      {
+        posy = posy - 100 ; 
+      }
+    }
+    return posy ;
+  }
+  public int goup(int keyz , int psy )
+  {
+    if (keyz == 87)
+    {
+      if (psy >= 0)
+      {
+        psy = psy - 100 ; 
+      }
+    } 
+    return psy ;
+  }
+  public int pressdown(int keyz , int posy) // if press go down
+  {
+    if (keyz == 40)
+    {
+      if ( posy <= scrhei - 100 )
+      {
+        posy = posy + 7 ; 
+      }
+    }  
+    return posy ;
+  }
+  public int godown(int keyz , int psy)
+  {
+    if (keyz == 83)
+    {
+      if ( psy <= scrhei - 100 )
+      {
+        psy = psy + 7 ; 
+      }
+    } 
+    return psy ;
+  }
+  public int pressright(int keyz , int posx) // if press go right
+  {
+    if (keyz == 39)
+    {
+      if ( posx <= scrwid - 100 )
+      {
+        posx = posx + 100 ; 
+      }
+    }
+    return posx ;
+  }  
+  public int goright(int keyz , int psx)
+  {
+    if (keyz == 68)
+    {
+      if ( psx <= scrwid - 100 )
+      {
+        psx = psx + 100 ; 
+      }
+    }    
+    return psx ;    
+  }
+  public int pressleft(int keyz , int posx ) // if press go left
+  {
+    if (keyz == 37)
+    {
+      if ( posx >= 0 )
+      {
+        posx = posx - 100 ; 
+      }
+    }
+    return posx ;
+  }  
+  public int goleft(int keyz , int psx)
+  {
+    if (keyz == 65)
+    {
+      if ( psx >= 0 )
+      {
+        psx = psx - 100 ; 
+      }
+    }    
+    return psx;    
+  }
+  public boolean argshoot (int keyz)
+  {
+     if (collision(arx,ary,100,100,bx,by,80,80) && collision(jpx,jpy,100,100,bx,by,80,80)==false )
+     {
+       if (keyz == 90) return true ;
+     }
+     return false;
+  }
+  public boolean japshoot (int keyz)
+  {
+     if (collision(arx,ary,100,100,bx,by,80,80)==false && collision(jpx,jpy,100,100,bx,by,80,80))
+     {
+       if (keyz == 32) return true ;
+     }
+     return false;
+  }  
+  public void keyTyped(KeyEvent e){}
+  public void keyReleased(KeyEvent e){}
+  public void keyPressed(KeyEvent e)
+  {
+    js = false ;
+    as = false ;
+    int key = e.getKeyCode();
+    jpy = pressup(key,jpy); ary = goup(key,ary);
+    jpy = pressdown(key,jpy); ary = godown(key,ary);
+    jpx = pressright(key,jpx); arx = goright(key,arx);
+    jpx = pressleft(key,jpx); arx = goleft(key,arx);
+    if (argshoot(key)) {by = by - 200 ; bx = bx + 200; as = true ;};// left player press z for shooting
+    if (japshoot(key)) {by = by - 200 ; bx = bx - 200; js = true ;};// right player press space bar for shooting
+    //System.out.println(px+" "+py);
+    repaint();
+    e.consume();
+  }
+   public void start()
+  {
+    Thread deku = new Thread(this);
+    deku.start();
+  }
+  public void reset()
+  {
+    jpx = 950 ; jpy = 575 ; arx = 200 ; ary = 575 ; bx =590 ; by = 592 ;
+  } 
+  public void paint(Graphics g)
+  {
+    if (aw == false && jw == false)
+    {g.setColor(Color.green);
+    g.fillRect(0,0,1300,800);
+    g.setColor(Color.orange);
+    g.fillRect(0,670,1300,130);
+    g.drawImage(goalarg,-280,270,this);
+    g.drawImage(goaljap,1160,270,this);
+    g.drawImage(jap,jpx,jpy,this);
+    g.drawImage(arg,arx,ary,this);
+    g.drawImage(ball,bx,by,this);
+    g.setColor(Color.red);
+    g.setFont(meme);
+    g.drawString("JAPAN " + jc + " goals ",950,50);
+    g.setColor(Color.black);
+    g.drawString("ARGENTINA " + ac + " goals",0,50);
+    }
+    if (aw ) {mx=50;my=50;g.drawImage(messi,mx,my,this);}
+    if (jw ) {kx=50;ky=50;g.drawImage(kagawa,kx,ky,this);}
+  }
+  public void checkarg()
+  {
+      if (collision(arx,ary,100,100,bx,by,80,80) && collision(jpx,jpy,100,100,bx,by,80,80)==false )
+      {
+        bx = bx + 10 ;
+        //bx = bx +5*c1 ; 
+        ball = b[c1] ;
+        c1 -- ; if (c1 == 0 ) c1 = 4 ;
+      }    
+  }
+  public void checkjap()
+  {
+      if (collision(jpx,jpy,100,100,bx,by,80,80) && collision(arx,ary,100,100,bx,by,80,80)==false )
+      {
+        bx = bx - 10 ;
+        //bx = bx -5*c2 ;
+        ball = b[c2] ;
+        c2-- ; if (c2 == 0) c2 = 4 ;
+      }    
+  }
+  public void checkboth()
+  {
+       if (collision(jpx,jpy,100,100,bx,by,80,80) && collision(arx,ary,100,100,bx,by,80,80) )
+      {
+        by = by -  30 ;
+        ball = b[c2] ;
+        c2-- ; if (c2 == 0) c2 = 4 ;
+      }   
+  }
+  public void checkcolli()
+  {
+      if (collision(jpx,jpy,100,100,arx,ary,100,100) )
+      {
+        jpx = jpx + 20 ;
+        arx = arx -20 ;
+      }       
+  }
+  public void downie()
+  {
+      if (jpy < 575)
+      {
+        if (collision(1160,270,400,400,jpx,jpy,100,100)==false && jpy != 300) jpy = jpy + 15 ;
+        //if (collision(1160,270,400,400,jpx,jpy,100,100)==false && jpy == 150) jpy = jpy + 15 ;
+        //if (collision(1160,270,400,400,jpx,jpy,100,100) && jpy != 150) jpy = jpy + 15 ;
+      }
+      if (ary < 575)
+      {
+        if (collision(-280,270,400,400,arx,ary,100,100)==false && ary != 300) ary = ary + 15 ;
+        //if (collision(-280,270,400,400,arx,ary,100,100) && ary != 150) ary = ary + 15 ;
+        //if (collision(-280,270,400,400,arx,ary,100,100)==false && ary == 150) ary = ary + 15 ;
+      }
+      //if (jpy < 575 && (collision(-280,270,400,400,jpx,jpy,100,100)==false && jpy != 300) ) jpy = jpy + 15;
+      //if (ary < 575 && (collision(-280,270,400,400,arx,ary,100,100)==false && ary != 300)) ary = ary + 15 ;
+      if (by < 592 ) 
+      { 
+        by = by +10 ;
+        if (as) bx = bx + 10;
+        if (js) bx = bx - 10 ;
+      }
+  }
+  public void japanscore()
+  {
+    if (collision(-280,270,400,400,bx,by,80,80)) 
+    {
+      
+      jc ++ ; 
+      jw = true ;
+      bx = 590;
+      by = 492 ;
+    }
+  }
+  public void argenscore()
+  {
+    if (collision(1160,270,400,400,bx,by,80,80)) 
+    {
+      ac ++ ;
+      aw = true ;
+      bx = 590 ;
+      by = 492 ;
+    }
+  }
+  public void run()
+  {
+    while ( true )
+    {
+      if (aw == false && jw == false)
+      {checkarg(); // if the arg player kick the ball
+      checkjap(); // if the jap player kick the ball
+      checkboth();//if the two player both kick the ball
+      checkcolli();// if the two player collide
+      downie();// manage the movement of the object
+      japanscore();
+      if (jw) {kx++;ky++;if (kx>700&&ky>700) jw = false ;}
+      argenscore();
+      }
+      if (jw) {kx++;ky++;if (kx>700&&ky>700) jw = false ;}
+      if (aw) {mx++;my++;if (mx>700&&my>700) aw = false;}
+      repaint();
+            try
+      {
+        Thread.sleep(50);
+      }
+      catch(InterruptedException e) {}
+    }
+  }
+}
